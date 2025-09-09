@@ -8,7 +8,9 @@ import com.psk.Billify_backend.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,22 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryEntity newCategory=convertToEntity(request);
         newCategory=categoryRepository.save(newCategory);
         return convertToResonse(newCategory);
+    }
+
+    @Override
+    public List<CategoryResponse> read() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(categoryEntity -> convertToResonse(categoryEntity))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(String categoryId) {
+        CategoryEntity existingCategory=categoryRepository.findByCategoryId(categoryId)
+                .orElseThrow(()->new RuntimeException("Category not found: "+categoryId));
+
+        categoryRepository.delete(existingCategory);
     }
 
     private CategoryResponse convertToResonse(CategoryEntity newCategory) {
