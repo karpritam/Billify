@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
+import { Link } from "react-router-dom";
 
 const MenuBar = () => {
 	const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -25,39 +26,35 @@ const MenuBar = () => {
 	};
 	return (
 		<div>
-			<nav className="flex justify-between absolute top-0 left-0 w-full z-10 bg-gray-900">
+			<nav className="flex justify-between  top-0 left-0 w-full z-10 bg-gray-900">
 				<div className="container mx-auto flex justify-start gap-7 items-center py-4 px-6 md:px-20 lg:px-32 ">
-					<a href="#">
+					<Link to="/">
 						<img
 							className="cursor-pointer h-10 w-auto"
 							src={assets.bill}
 							alt="logo"
 						/>
-					</a>
+					</Link>
 					<ul className="hidden md:flex gap-7 text-white">
-						<a
-							href="#DASHBOARD"
+						<Link
+							to="/dashboard"
 							className="cursor-pointer hover:text-green-500">
 							DASHBOARD
-						</a>
-						<a href="#EXPLORE" className="cursor-pointer hover:text-green-500">
+						</Link>
+						<Link to="/explore" className="cursor-pointer hover:text-green-500">
 							EXPLORE
-						</a>
-						<a
-							href="#MANAGE ITEMS"
-							className="cursor-pointer hover:text-green-500">
+						</Link>
+						<Link to="/items" className="cursor-pointer hover:text-green-500">
 							MANAGE ITEMS
-						</a>
-						<a
-							href="#MANAGE CATEGORIES"
+						</Link>
+						<Link
+							to="/category"
 							className="cursor-pointer hover:text-green-500">
 							MANAGE CATEGORIES
-						</a>
-						<a
-							href="#MANAGE USERS"
-							className="cursor-pointer hover:text-green-500">
+						</Link>
+						<Link to="/users" className="cursor-pointer hover:text-green-500">
 							MANAGE USERS
-						</a>
+						</Link>
 					</ul>
 				</div>
 				<button className="hidden md:block px-10 py-2 rounded-full text-white">
@@ -84,36 +81,36 @@ const MenuBar = () => {
 					/>
 				</div>
 				<ul className="flex flex-col items-start gap-2 mt-5 px-5 text-lg font-medium">
-					<a
+					<Link
 						onClick={() => setShowMobileMenu(false)}
-						href="#DASHBOARD"
+						to="/dashboard"
 						className="px-4 py-2 rounded-full inline-block">
 						DASHBOARD
-					</a>
-					<a
+					</Link>
+					<Link
 						onClick={() => setShowMobileMenu(false)}
-						href="#EXPLORE"
+						to="/explore"
 						className="px-4 py-2 rounded-full inline-block">
 						EXPLORE
-					</a>
-					<a
+					</Link>
+					<Link
 						onClick={() => setShowMobileMenu(false)}
-						href="#MANAGE ITEMS"
+						to="/items"
 						className="px-4 py-2 rounded-full inline-block">
 						MANAGE ITEMS
-					</a>
-					<a
+					</Link>
+					<Link
 						onClick={() => setShowMobileMenu(false)}
-						href="#MANAGE CATEGORIES"
+						to="/category"
 						className="px-4 py-2 rounded-full inline-block">
 						MANAGE CATEGORIES
-					</a>
-					<a
+					</Link>
+					<Link
 						onClick={() => setShowMobileMenu(false)}
-						href="#MANAGE USERS"
+						to="/users"
 						className="px-4 py-2 rounded-full inline-block">
 						MANAGE USERS
-					</a>
+					</Link>
 				</ul>
 			</nav>
 		</div>
