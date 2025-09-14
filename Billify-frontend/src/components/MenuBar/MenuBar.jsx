@@ -57,7 +57,7 @@ const MenuBar = () => {
 						</Link>
 					</ul>
 				</div>
-				<button className="hidden md:block px-10 py-2 rounded-full text-white">
+				<button className="hidden md:block px-6 py-2 rounded-full text-white">
 					Sign Up/Login
 				</button>
 				<button
