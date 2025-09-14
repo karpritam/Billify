@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")  // Base URL
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CategoryController {
 
     @Autowired
