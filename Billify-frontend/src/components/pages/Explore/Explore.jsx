@@ -5,7 +5,7 @@ const Explore = () => {
 	const { categories } = useContext(AppContext);
 	console.log(categories);
 	return (
-		<div className="flex gap-10 h-[calc(100vh-5rem)] bg-[#2c3335] text-gray-100 p-8">
+		<div className="flex gap-5 box-border h-[calc(100vh-5rem)] bg-[#2c3335] text-gray-100 p-6">
 			{/* Left Section - Categories & Items */}
 			<div className="flex-[0.7] border border-[#ccc] rounded-lg p-4 h-[100%] flex flex-col">
 				<div className="flex-[0.3] overflow-y-auto">Categories</div>
