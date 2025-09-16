@@ -6,11 +6,13 @@ import Explore from "./components/pages/Explore/Explore";
 import ManageCategory from "./components/pages/ManageCategory/ManageCategory";
 import ManageItems from "./components/pages/ManageItems/ManageItems";
 import ManageUsers from "./components/pages/ManageUsers/ManageUsers";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
 	return (
 		<div>
 			<MenuBar />
+			<Toaster position="top-center" reverseOrder={true} />
 			<Routes>
 				<Route path="/dashboard" element={<DashBoard />} />
 				<Route path="/explore" element={<Explore />} />

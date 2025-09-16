@@ -1,16 +1,57 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../../../context/AppContext";
 import { TrashIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { deleteCategory } from "../../../../service/CategoryService";
+import toast from "react-hot-toast";
 
 const CategoryList = () => {
-	const { categories } = useContext(AppContext);
+	const { categories, setCategories } = useContext(AppContext);
+	const [searchItem, setSearchItem] = useState("");
+	const filterCtaegories = categories.filter((category) =>
+		category.name.toLowerCase().includes(searchItem.toLowerCase())
+	);
+	const deleteByCategoryId = async (categoryId) => {
+		try {
+			const response = await deleteCategory(categoryId);
+			if (response.status === 204) {
+				const updatedCategories = categories.filter(
+					(category) => category.categoryId != categoryId
+				);
+				setCategories(updatedCategories);
+				toast.success("Category deleted");
+			} else {
+				toast.error("Unable to delete category");
+			}
+		} catch (error) {
+			console.error(error);
+			toast.error("Unable to delete category");
+		}
+	};
 	return (
-		<div className="h-[100vh] overflow-y-auto overflow-x-hidden">
+		<div className=" overflow-y-auto overflow-x-hidden">
 			{/* Search Bar */}
-			<div className="row p-2 text-white text-lg font-semibold">Search Bar</div>
+			<div className="p-1">
+				<div className="flex mb-2 border border-gray-300 rounded-lg overflow-hidden">
+					<input
+						onChange={(e) => setSearchItem(e.target.value)}
+						value={searchItem}
+						type="text"
+						name="keyword"
+						id="keyword"
+						placeholder="Search By keyword"
+						className="flex-1 px-3 py-2 focus:outline-none"
+					/>
+					<span
+						// onClick={(e) => setSearchItem(e.target.value)}
+						className="bg-yellow-400 px-3 flex items-center justify-center cursor-pointer">
+						<MagnifyingGlassIcon className="h-8 w-6 text-gray-800" />
+					</span>
+				</div>
+			</div>
 			{/* Categories */}
 			<div className="flex flex-col gap-4 ">
-				{categories.map((category, index) => (
+				{filterCtaegories.map((category, index) => (
 					<div key={index}>
 						{/* Left Side: Image and Text */}
 						<div
@@ -21,7 +62,7 @@ const CategoryList = () => {
 									<img
 										src={category.imgUrl}
 										alt={category.name}
-										className="md:w-[70px] h-[60px] rounded-lg border-2 border-white/50 object-cover"
+										className="md:w-[70px] h-[70px] rounded-lg border-2 border-white/50 object-cover"
 									/>
 								</div>
 								<div className="flex-grow-1">
@@ -36,6 +77,7 @@ const CategoryList = () => {
 							{/* Right Side: Delete Button */}
 							<div>
 								<button
+									onClick={() => deleteByCategoryId(category.categoryId)}
 									className="bg-red-600 hover:bg-red-700 p-2 rounded transition-colors duration-300"
 									title="Delete">
 									<TrashIcon className="h-5 w-5 text-white" />
