@@ -2,6 +2,7 @@ package com.psk.Billify_backend.service.implementation;
 
 import com.psk.Billify_backend.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     @Value("${app.s3.bucket}")
     private String bucketName;
+
 
     private final S3Client s3Client;
 
