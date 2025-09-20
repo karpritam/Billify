@@ -1,4 +1,4 @@
-package com.psk.Billify_backend.service;
+package com.psk.Billify_backend.service.implementation;
 
 import com.psk.Billify_backend.entity.UserEntity;
 import com.psk.Billify_backend.repository.UserRepository;
