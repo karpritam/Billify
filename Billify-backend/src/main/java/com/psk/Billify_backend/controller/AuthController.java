@@ -2,7 +2,9 @@ package com.psk.Billify_backend.controller;
 
 import com.psk.Billify_backend.io.AuthRequest;
 import com.psk.Billify_backend.io.AuthResponse;
+import com.psk.Billify_backend.service.UserService;
 import com.psk.Billify_backend.service.implementation.AppUserDetailsService;
+import com.psk.Billify_backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +27,17 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final AppUserDetailsService appUserDetailsService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) throws Exception {
         authenticate(request.getEmail(),request.getPassword());
         final UserDetails userDetails=appUserDetailsService.loadUserByUsername(request.getEmail());
+        final String  jwtToken=jwtUtil.generateToken(userDetails);
+        //fetch the role from repo
+        String role=userService.getUserRole(request.getEmail());
+        return new AuthResponse(request.getEmail(),jwtToken,role);
     }
 
     private void authenticate(String email, String password) throws Exception {

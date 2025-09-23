@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserResponse {
 
-    private Long userId;
+    private String userId;
     private String name;
     private String email;
     private String password;
