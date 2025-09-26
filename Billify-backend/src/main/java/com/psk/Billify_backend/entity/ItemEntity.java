@@ -27,6 +27,7 @@ public class ItemEntity {
     @Column(unique = true)
     private String itemId;
     private String name;
+    private String description;
     private BigDecimal price;
     @CreationTimestamp
     @Column(updatable = false)
