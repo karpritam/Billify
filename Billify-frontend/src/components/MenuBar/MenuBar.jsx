@@ -73,7 +73,7 @@ const MenuBar = () => {
 				className={`md:hidden ${
 					showMobileMenu ? "fixed w-[40%]" : "h-0 w-0"
 				} right-0 top-0 bottom-0 rounded-md overflow-hidden bg-green-100 transition-all duration-500 ease-in-out z-20`}>
-				<div className="flex justify-start p-6 cursor-pointer">
+				<div className="flex justify-end p-6 cursor-pointer pr-8">
 					<img
 						onClick={handleMenuClose}
 						src={assets.crossIcon}
