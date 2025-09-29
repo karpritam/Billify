@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    @Autowired
+
     private final CategoryService categoryService;
 
     @PostMapping("/admin/categories")
@@ -36,7 +36,7 @@ public class CategoryController {
 
     }
 
-    @GetMapping("/categories")
+    @GetMapping
     public List<CategoryResponse> fetchCategories(){
         return categoryService.read();
     }
