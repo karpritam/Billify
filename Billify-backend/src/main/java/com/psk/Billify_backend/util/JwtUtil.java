@@ -44,11 +44,11 @@ public class JwtUtil {
     }
 
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
-        final Claims claims=extractClaims(token);
+        final Claims claims=extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractClaims(String token) {
+    private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .build()
