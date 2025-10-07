@@ -11,23 +11,49 @@ const CategoryList = () => {
 	const filterCtaegories = categories.filter((category) =>
 		category.name.toLowerCase().includes(searchItem.toLowerCase())
 	);
-	const deleteByCategoryId = async (categoryId) => {
-		try {
-			const response = await deleteCategory(categoryId);
-			if (response.status === 204) {
-				const updatedCategories = categories.filter(
-					(category) => category.categoryId != categoryId
-				);
-				setCategories(updatedCategories);
-				toast.success("Category deleted");
-			} else {
-				toast.error("Unable to delete category");
+	const deleteByCategoryId = (categoryId) => {
+		const toastId = toast(
+			(t) => (
+				<div className="flex flex-col gap-2">
+					<span>Are you sure you want to delete this category?</span>
+					<div className="flex justify-end gap-2 mt-1">
+						<button
+							className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded-md"
+							onClick={() => toast.dismiss(t.id)}>
+							Cancel
+						</button>
+						<button
+							className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
+							onClick={async () => {
+								try {
+									const response = await deleteCategory(categoryId);
+									if (response.status === 204) {
+										const updatedCategories = categories.filter(
+											(category) => category.categoryId !== categoryId
+										);
+										setCategories(updatedCategories);
+										toast.success("Category deleted");
+									} else {
+										toast.error("Unable to delete category");
+									}
+								} catch (error) {
+									console.error(error);
+									toast.error("Unable to delete category");
+								} finally {
+									toast.dismiss(t.id);
+								}
+							}}>
+							Delete
+						</button>
+					</div>
+				</div>
+			),
+			{
+				duration: Infinity, // Keep toast open until user chooses
 			}
-		} catch (error) {
-			console.error(error);
-			toast.error("Unable to delete category");
-		}
+		);
 	};
+
 	return (
 		<div className=" overflow-y-auto overflow-x-hidden">
 			{/* Search Bar */}
