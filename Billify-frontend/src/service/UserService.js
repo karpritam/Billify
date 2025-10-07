@@ -22,7 +22,7 @@ export const deleteUser = async (id) => {
 
 //getuser
 export const fetchUser = async () => {
-	return await axios.delete(
+	return await axios.get(
 		"http://localhost:8080/api/v1.0/admin/users",
 
 		{

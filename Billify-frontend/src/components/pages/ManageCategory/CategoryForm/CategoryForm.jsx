@@ -24,9 +24,20 @@ const CategoryForm = () => {
 	//fetch api
 	const onSubmitHandler = async (e) => {
 		e.preventDefault();
-		if (!image) {
-			toast.error("Please select image for category");
-			setLoading(false);
+		if (!image || !data.name || !data.description || !data.bgColor) {
+			let missingFields = [];
+
+			if (!image) missingFields.push("Image");
+			if (!data.name) missingFields.push("Name");
+			if (!data.email) missingFields.push("Description");
+			if (!data.password) missingFields.push("Bg Color");
+
+			const message =
+				missingFields.length === 1
+					? `${missingFields[0]} field is required`
+					: `${missingFields.join(", ")} fields are required`;
+
+			toast.error(message);
 			return;
 		}
 		setLoading(true);
@@ -55,7 +66,7 @@ const CategoryForm = () => {
 	return (
 		<div className="mx-2 mt-2">
 			<div className="flex flex-wrap -mx-3 ">
-				<div className="bg-white rounded-lg shadow p-6 sm:w-full md:w-2/3 max-w-md">
+				<div className="bg-white rounded-lg shadow p-6 sm:w-full md:w-2/3 ">
 					<form onSubmit={onSubmitHandler} className="space-y-4">
 						{/* Image Upload */}
 						<div className="flex flex-col">
