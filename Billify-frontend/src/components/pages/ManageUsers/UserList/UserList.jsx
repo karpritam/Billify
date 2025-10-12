@@ -45,10 +45,10 @@ const UserList = ({ users, setUsers }) => {
 		);
 	};
 	return (
-		<div className="overflow-y-auto overflow-x-hidden h-full p-4">
+		<div className="overflow-y-auto overflow-x-hidden h-full ">
 			{/* Search Bar */}
-			<div className="mb-4">
-				<div className="flex border border-gray-300 rounded-lg overflow-hidden bg-white">
+			<div className="mb-4 ">
+				<div className="flex mb-2 border border-gray-300 rounded-lg overflow-hidden bg-white">
 					<input
 						onChange={(e) => setSearchItem(e.target.value)}
 						value={searchItem}

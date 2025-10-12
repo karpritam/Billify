@@ -55,9 +55,9 @@ const CategoryList = () => {
 	};
 
 	return (
-		<div className=" overflow-y-auto overflow-x-hidden">
+		<div className="overflow-y-auto overflow-x-hidden ">
 			{/* Search Bar */}
-			<div className="p-1">
+			<div className="mb-4">
 				<div className="flex mb-2 border border-gray-300 rounded-lg overflow-hidden">
 					<input
 						onChange={(e) => setSearchItem(e.target.value)}
@@ -65,7 +65,7 @@ const CategoryList = () => {
 						type="text"
 						name="keyword"
 						id="keyword"
-						placeholder="Search By keyword"
+						placeholder="Search by keyword"
 						className="flex-1 px-3 py-2 focus:outline-none"
 					/>
 					<span

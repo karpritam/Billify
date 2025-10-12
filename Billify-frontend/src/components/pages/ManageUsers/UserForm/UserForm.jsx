@@ -70,7 +70,7 @@ const UserForm = ({ setUsers }) => {
 								type="text"
 								id="name"
 								placeholder="Enter Your name"
-								className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								className="w-full border border-gray-300 text-gray-800 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 							/>
 						</div>
 						<div className="mb-3">
@@ -86,7 +86,7 @@ const UserForm = ({ setUsers }) => {
 								type="email"
 								id="email"
 								placeholder="yourname@example.com"
-								className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								className="w-full border border-gray-300 text-gray-800 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 							/>
 						</div>
 						<div className="mb-3">
@@ -102,7 +102,7 @@ const UserForm = ({ setUsers }) => {
 								type="password"
 								id="password"
 								placeholder="********"
-								className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+								className="w-full border border-gray-300 text-gray-800 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
 							/>
 						</div>
 
