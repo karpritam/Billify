@@ -3,6 +3,7 @@ import menuIcon from "./menu.png";
 import crossIcon from "./close.png";
 import upload from "./upload.png";
 import loginBg from "./login-page.mp4";
+import profile from "./page.png";
 
 export const assets = {
 	bill,
@@ -10,4 +11,5 @@ export const assets = {
 	crossIcon,
 	upload,
 	loginBg,
+	profile,
 };

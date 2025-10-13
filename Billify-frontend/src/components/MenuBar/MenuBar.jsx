@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const MenuBar = () => {
 	const [showMobileMenu, setShowMobileMenu] = useState(false);
+	const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+	const logout = () => {
+		// localStorage.removeItem("token");
+		// toast.success("Logged out successfully");
+		// window.location.href = "/login";
+	};
+
+	// prevent scrolling when mobile menu is open
 	useEffect(() => {
-		if (showMobileMenu) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "auto";
-		}
+		document.body.style.overflow = showMobileMenu ? "hidden" : "auto";
 		return () => {
 			document.body.style.overflow = "auto";
 		};
 	}, [showMobileMenu]);
-	const handleMenuOpen = () => {
-		setTimeout(() => {
-			setShowMobileMenu(true);
-		}, 250);
-	};
-	const handleMenuClose = () => {
-		setTimeout(() => {
-			setShowMobileMenu(false);
-		}, 250);
-	};
+
 	return (
-		<div>
-			<nav className="flex justify-between  top-0 left-0 w-full z-10 bg-gray-900">
-				<div className="container mx-auto flex justify-start gap-7 items-center py-4 px-6 md:px-20 lg:px-32 ">
+		<div className="relative">
+			{/* ----------- Top Navigation ------------- */}
+			<nav className="flex justify-between items-center top-0 left-0 w-full z-20 bg-gray-900">
+				<div className="container mx-auto flex justify-start gap-7 items-center py-4 px-6 md:px-20 lg:px-32">
 					<Link to="/">
 						<img
 							className="cursor-pointer h-10 w-auto"
@@ -35,7 +33,9 @@ const MenuBar = () => {
 							alt="logo"
 						/>
 					</Link>
-					<ul className="hidden md:flex gap-7 text-white">
+
+					{/* Desktop Menu */}
+					<ul className="hidden md:flex gap-7 text-white font-medium">
 						<Link
 							to="/dashboard"
 							className="cursor-pointer hover:text-green-500">
@@ -57,62 +57,113 @@ const MenuBar = () => {
 						</Link>
 					</ul>
 				</div>
-				<button className="hidden md:block px-6 py-2 rounded-full text-white">
-					Sign Up/Login
-				</button>
+
+				{/* ----------- Profile Dropdown (Desktop) ----------- */}
+				<div className="relative m-3 z-10">
+					<img
+						src={assets.profile}
+						alt="User profile"
+						height={52}
+						width={52}
+						onClick={() => setShowProfileMenu(!showProfileMenu)}
+						className="cursor-pointer hover:scale-105 transition-transform duration-200"
+					/>
+					{showProfileMenu && (
+						<ul className="absolute right-0 mt-2 w-44 bg-white text-black rounded-md shadow-md z-50 animate-fadeIn">
+							<li>
+								<a
+									href="#"
+									className="block px-4 py-2 hover:bg-gray-300 hover:rounded-md">
+									Settings
+								</a>
+							</li>
+							<li>
+								<a
+									href="#"
+									className="block px-4 py-2 hover:bg-gray-300 hover:rounded-md">
+									Activity Log
+								</a>
+							</li>
+							<li>
+								<hr className="border-gray-300" />
+							</li>
+							<li>
+								<button
+									onClick={logout}
+									className="block w-full text-left px-4 py-2 hover:bg-red-500 hover:text-white hover:rounded-md">
+									Logout
+								</button>
+							</li>
+						</ul>
+					)}
+				</div>
+
+				{/* ----------- Mobile Menu Button ----------- */}
 				<button
-					onClick={handleMenuOpen}
-					className="md:hidden cursor-pointer pr-10"
+					onClick={() => setShowMobileMenu(true)}
+					className="md:hidden cursor-pointer pr-6"
 					aria-label="Open menu"
 					aria-expanded={showMobileMenu}>
-					<img src={assets.menuIcon} alt="" className="w-7" />
+					<img src={assets.menuIcon} alt="menu" className="w-7" />
 				</button>
 			</nav>
-			{/* -----------mobile menu------------- */}
+
+			{/* ----------- Mobile Slide Menu ----------- */}
 			<nav
-				className={`md:hidden ${
-					showMobileMenu ? "fixed w-[40%]" : "h-0 w-0"
-				} right-0 top-0 bottom-0 rounded-md overflow-hidden bg-green-100 transition-all duration-500 ease-in-out z-20`}>
-				<div className="flex justify-end p-6 cursor-pointer pr-8">
+				className={`fixed top-0 right-0 h-full w-[70%] sm:w-[50%] bg-green-100 z-40 transition-transform duration-500 ease-in-out ${
+					showMobileMenu ? "translate-x-0" : "translate-x-full"
+				}`}>
+				{/* Close Button */}
+				<div className="flex justify-end p-6">
 					<img
-						onClick={handleMenuClose}
+						onClick={() => setShowMobileMenu(false)}
 						src={assets.crossIcon}
-						className="p-2 w-10 cursor-pointer hover:bg-green-500 rounded "
+						alt="Close menu"
+						className="p-2 w-10 cursor-pointer hover:bg-green-400 rounded-md transition"
 					/>
 				</div>
-				<ul className="flex flex-col items-start gap-2 mt-5 px-5 text-lg font-medium">
+
+				{/* Menu Links */}
+				<ul className="flex flex-col items-start gap-3 mt-5 px-6 text-lg font-medium">
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/dashboard"
-						className="px-4 py-2 rounded-full inline-block">
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						DASHBOARD
 					</Link>
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/explore"
-						className="px-4 py-2 rounded-full inline-block">
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						EXPLORE
 					</Link>
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/items"
-						className="px-4 py-2 rounded-full inline-block">
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						MANAGE ITEMS
 					</Link>
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/category"
-						className="px-4 py-2 rounded-full inline-block">
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						MANAGE CATEGORIES
 					</Link>
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/users"
-						className="px-4 py-2 rounded-full inline-block">
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						MANAGE USERS
 					</Link>
 				</ul>
 			</nav>
+
+			{/* Overlay Background when Mobile Menu Open */}
+			{showMobileMenu && (
+				<div
+					onClick={() => setShowMobileMenu(false)}
+					className="fixed inset-0 bg-black bg-opacity-40 z-30"></div>
+			)}
 		</div>
 	);
 };
