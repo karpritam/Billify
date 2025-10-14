@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AppContext } from "../../context/AppContext";
 
 const MenuBar = () => {
+	const navigate = useNavigate();
+	const { setAuthData } = useContext(AppContext);
 	const [showMobileMenu, setShowMobileMenu] = useState(false);
 	const [showProfileMenu, setShowProfileMenu] = useState(false);
 
 	const logout = () => {
-		// localStorage.removeItem("token");
-		// toast.success("Logged out successfully");
-		// window.location.href = "/login";
+		localStorage.removeItem("token");
+		localStorage.removeItem("role");
+		setAuthData(null, null);
+		navigate("/login");
+		toast.success("Logged out successfully");
 	};
 
 	// prevent scrolling when mobile menu is open
@@ -59,7 +64,7 @@ const MenuBar = () => {
 				</div>
 
 				{/* ----------- Profile Dropdown (Desktop) ----------- */}
-				<div className="relative m-3 z-10">
+				<div className="relative m-3 z-10 right-5">
 					<img
 						src={assets.profile}
 						alt="User profile"
@@ -104,7 +109,7 @@ const MenuBar = () => {
 					className="md:hidden cursor-pointer pr-6"
 					aria-label="Open menu"
 					aria-expanded={showMobileMenu}>
-					<img src={assets.menuIcon} alt="menu" className="w-7" />
+					<img src={assets.menuIcon} alt="menu" className="w-8" />
 				</button>
 			</nav>
 
