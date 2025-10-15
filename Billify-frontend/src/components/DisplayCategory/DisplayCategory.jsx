@@ -1,21 +1,24 @@
 import React from "react";
 import Category from "../Category/Category";
 
-const DisplayCategory = ({ categories = [] }) => {
+const DisplayCategory = ({
+	categories,
+	selectedCategory,
+	setSelectedCategory,
+}) => {
 	return (
-		<div className="w-full ">
-			<div className="flex flex-wrap gap-3 justify-start items-start">
+		<div className="w-full">
+			<div className="flex flex-wrap m-2 gap-3 justify-start items-start">
 				{categories.length > 0 ? (
 					categories.map((category) => (
-						<div
-							key={category.categoryId}
-							className="w-[180px] h-[80px]"
-						>
+						<div key={category.categoryId} className="w-[180px] h-[80px]">
 							<Category
 								categoryName={category.name}
 								imgUrl={category.imgUrl}
 								numberOfItems={category.items}
 								bgColor={category.bgColor}
+								isSelected={selectedCategory === category.categoryId}
+								onClick={() => setSelectedCategory(category.categoryId)}
 							/>
 						</div>
 					))

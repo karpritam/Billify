@@ -8,18 +8,22 @@ import CartSummary from "../../CartSummary/CartSummary";
 
 const Explore = () => {
 	const { categories } = useContext(AppContext);
-	const [selectedCategory, setSelectedCategory] = useState(" ");
+	const [selectedCategory, setSelectedCategory] = useState("");
 	console.log(categories);
 	return (
 		<div className="flex gap-5 box-border h-[calc(100vh-5rem)] bg-[#2c3335] text-gray-100 p-6">
 			{/* Left Section - Categories & Items */}
 			<div className="flex-[0.7] border border-[#ccc] rounded-lg p-4 h-[100%] flex flex-col">
 				<div className="flex-[0.3] overflow-y-auto">
-					<DisplayCategory categories={categories} />
+					<DisplayCategory
+						selectedCategory={selectedCategory}
+						setSelectedCategory={setSelectedCategory}
+						categories={categories}
+					/>
 				</div>
 				<hr className="my-5 mx-0 border-t border-white" />
 				<div className="flex-[0.7] overflow-y-auto">
-					<DisplayItems />
+					<DisplayItems selectedCategory={selectedCategory} />
 				</div>
 			</div>
 			{/* Right Section - Customer Form, Cart Items, Cart Summary */}
