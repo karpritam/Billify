@@ -73,7 +73,7 @@ const ItemList = () => {
 				{filteredItems.map((item, index) => (
 					<div
 						key={index}
-						className="flex items-center justify-between bg-gray-900 p-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+						className="flex items-center justify-between bg-gray-800/60  border border-gray-600 p-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
 						<div className="flex items-center gap-4">
 							<img
 								src={item.imgUrl}

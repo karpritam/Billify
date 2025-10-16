@@ -9,34 +9,59 @@ import CartSummary from "../../CartSummary/CartSummary";
 const Explore = () => {
 	const { categories } = useContext(AppContext);
 	const [selectedCategory, setSelectedCategory] = useState("");
-	console.log(categories);
+	const [customerName, setCustomerName] = useState("");
+	const [mobileNumber, setMobileNumber] = useState("");
+
 	return (
-		<div className="flex gap-5 box-border h-[calc(100vh-5rem)] bg-[#2c3335] text-gray-100 p-6">
-			{/* Left Section - Categories & Items */}
-			<div className="flex-[0.7] border border-[#ccc] rounded-lg p-4 h-[100%] flex flex-col">
-				<div className="flex-[0.3] overflow-y-auto">
+		<div className="flex gap-6 h-[calc(100vh-4.56rem)] bg-[#2c3335] text-gray-100 p-6 box-border">
+			{/* ---------- Left Section ---------- */}
+			<div className="flex-[0.7] flex flex-col border border-gray-700 rounded-xl p-4 bg-[#1e2426] shadow-md">
+				{/* Categories */}
+				<div className="flex-[0.35] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
 					<DisplayCategory
 						selectedCategory={selectedCategory}
 						setSelectedCategory={setSelectedCategory}
 						categories={categories}
 					/>
 				</div>
-				<hr className="my-5 mx-0 border-t border-white" />
-				<div className="flex-[0.7] overflow-y-auto">
+
+				<hr className="my-4 border-gray-600" />
+
+				{/* Items */}
+				<div className="flex-[0.65] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
 					<DisplayItems selectedCategory={selectedCategory} />
 				</div>
 			</div>
-			{/* Right Section - Customer Form, Cart Items, Cart Summary */}
-			<div className="flex-[0.3] flex-col border border-[#ccc] p-4 h-[100%] rounded-lg">
-				<div className="cutomer-form-container h-[15%]">
-					<CustomerForm />
+
+			{/* ---------- Right Section ---------- */}
+			<div className="flex-[0.3] flex flex-col border border-gray-700 rounded-xl p-4 bg-[#1e2426] shadow-md">
+				{/* Customer Form */}
+				<div className="h-[15%]">
+					<CustomerForm
+						customerName={customerName}
+						mobileNumber={mobileNumber}
+						setCustomerName={setCustomerName}
+						setMobileNumber={setMobileNumber}
+					/>
 				</div>
-				<hr className="my-3 text-light" />
-				<div className=" p-[12px] h-[55%] overflow-y-auto">
+
+				<hr className="my-3 border-gray-600" />
+
+				{/* Cart Items */}
+				<div className="flex-grow overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
 					<CartItems />
 				</div>
-				<div className="flex-[0.3] border-t border-white h-[30%]">
-					<CartSummary />
+
+				<hr className="my-3 border-gray-600" />
+
+				{/* Cart Summary */}
+				<div className="mt-auto">
+					<CartSummary
+						customerName={customerName}
+						mobileNumber={mobileNumber}
+						setCustomerName={setCustomerName}
+						setMobileNumber={setMobileNumber}
+					/>
 				</div>
 			</div>
 		</div>

@@ -68,7 +68,7 @@ const UserList = ({ users, setUsers }) => {
 					filteredUsers.map((user, index) => (
 						<div
 							key={index}
-							className="flex items-center justify-between bg-gray-900 p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+							className="flex items-center justify-between bg-gray-800/60 border border-gray-600 p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300">
 							<div>
 								<h5 className="text-lg font-semibold text-white">
 									{user.name}

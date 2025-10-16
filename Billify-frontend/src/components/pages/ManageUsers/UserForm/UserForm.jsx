@@ -53,8 +53,8 @@ const UserForm = ({ setUsers }) => {
 	};
 	return (
 		<div className="mx-2 mt-2">
-			<div className="flex flex-wrap -mx-3">
-				<div className="bg-white rounded-lg shadow p-6 md:w-2/3 ">
+			<div className="flex flex-wrap">
+				<div className="bg-white rounded-lg shadow p-6 sm:w-full md:w-2/3 ">
 					<form className="space-y-4" onSubmit={onSubmitHandler}>
 						{/* Name Field */}
 						<div className="mb-3">

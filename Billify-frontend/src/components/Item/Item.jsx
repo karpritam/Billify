@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ShoppingCart, Plus } from "lucide-react"; // Tailwind-friendly icon set
+import { AppContext } from "../../context/AppContext";
 
 const Item = ({ itemName, itemPrice, itemImage, itemId }) => {
+	const { addToCart } = useContext(AppContext);
+	const handleAddToCart = () => {
+		addToCart({
+			name: itemName,
+			price: itemPrice,
+			quantity: 1,
+			itemId: itemId,
+		});
+	};
 	return (
 		<div
 			className="
@@ -25,12 +35,14 @@ const Item = ({ itemName, itemPrice, itemImage, itemId }) => {
 
 			<div className="flex-grow">
 				<h6 className="text-white font-semibold mb-1">{itemName}</h6>
-				<p className="text-gray-300 font-bold">{itemPrice}</p>
+				<p className="text-gray-300 font-bold">₹{itemPrice}</p>
 			</div>
 
 			<div className="flex flex-col items-center justify-between h-full ml-3 space-y-2">
 				<ShoppingCart className="text-yellow-400 w-6 h-6" />
-				<button className="bg-green-600 hover:bg-green-700 text-white rounded-md p-1">
+				<button
+					className="bg-green-600 hover:bg-green-700 text-white rounded-md p-1"
+					onClick={handleAddToCart}>
 					<Plus className="w-4 h-4" />
 				</button>
 			</div>

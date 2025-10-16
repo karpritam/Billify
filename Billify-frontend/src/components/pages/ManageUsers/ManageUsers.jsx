@@ -26,11 +26,11 @@ const ManageUsers = () => {
 	}, []);
 
 	return (
-		<div className="flex gap-5 box-border p-6 h-[calc(100vh-5rem)] bg-[#2C3335]">
-			<div className="flex-[0.7] flex flex-col border border-[#ccc] rounded-lg p-4  h-full text-white">
+		<div className="flex gap-5 box-border p-6 h-[calc(100vh-4.56rem)] bg-[#2C3335]">
+			<div className="flex-[0.7] flex flex-col border border-gray-700 rounded-xl p-4 bg-[#1e2426] shadow-md">
 				<UserForm setUsers={setUsers} />
 			</div>
-			<div className="flex-[0.3] border border-[#ccc] rounded-lg p-4 h-full text-white">
+			<div className="flex-[0.3] border border-gray-700 rounded-xl p-4 bg-[#1e2426] shadow-md">
 				<UserList users={users} setUsers={setUsers} />
 			</div>
 		</div>

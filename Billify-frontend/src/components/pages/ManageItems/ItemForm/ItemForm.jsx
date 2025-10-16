@@ -16,6 +16,7 @@ const ItemForm = () => {
 		description: "",
 	});
 
+
 	const onChangeHandler = (e) => {
 		const { name, value } = e.target;
 		setData((prev) => ({ ...prev, [name]: value }));
@@ -77,8 +78,8 @@ const ItemForm = () => {
 	return (
 		<div className="item-form-container h-screen md:h-auto overflow-y-auto overflow-x-hidden">
 			<div className="mx-2 mt-2">
-				<div className="flex flex-wrap -mx-3">
-					<div className="bg-white rounded-lg shadow p-6 md:w-2/3">
+				<div className="flex flex-wrap">
+					<div className="bg-white rounded-lg shadow p-6 sm:w-full md:w-2/3">
 						<form onSubmit={onSubmitHandler} className="space-y-4">
 							{/* Image Upload */}
 							<div className="flex flex-col">
