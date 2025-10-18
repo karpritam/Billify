@@ -2,10 +2,7 @@ package com.psk.Billify_backend.service.implementation;
 
 import com.psk.Billify_backend.entity.OrderEntity;
 import com.psk.Billify_backend.entity.OrderItemEntity;
-import com.psk.Billify_backend.io.OrderRequest;
-import com.psk.Billify_backend.io.OrderResponse;
-import com.psk.Billify_backend.io.PaymentDetails;
-import com.psk.Billify_backend.io.PaymentMethod;
+import com.psk.Billify_backend.io.*;
 import com.psk.Billify_backend.repository.OrderEntityRepository;
 import com.psk.Billify_backend.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -99,5 +96,28 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderResponse verifyPayment(PaymentVerificationRequest request) {
+        OrderEntity existingOrder=orderEntityRepository.findByOrderId(request.getOrderId())
+                .orElseThrow(()->new RuntimeException("Order not found"));
+
+        if(!verifyRazorpaySignature(request.getRazorpayOrderId(),request.getRazorpayPaymentId(),request.getRazorpaySignature())){
+            throw new RuntimeException("Payment verification failed");
+        }
+
+        PaymentDetails paymentDetails=existingOrder.getPaymentDetails();
+        paymentDetails.setRazorpayOrderId(request.getRazorpayOrderId());
+        paymentDetails.setRazorpayPaymentId(request.getRazorpayPaymentId());
+        paymentDetails.setRazorpaySignature(request.getRazorpaySignature());
+        paymentDetails.setStatus(PaymentDetails.PaymentStatus.COMPLETED);
+
+        existingOrder=orderEntityRepository.save(existingOrder);
+        return convertToResponse(existingOrder);
+    }
+
+    private boolean verifyRazorpaySignature(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature) {
+        return true;
     }
 }
