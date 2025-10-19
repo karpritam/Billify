@@ -1,7 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-import { Receipt, CreditCard, Wallet } from "lucide-react";
+import { Receipt, CreditCard, Wallet, Phone, Key, Contact } from "lucide-react";
 import ReceiptPopup from "../ReceiptPopup/ReceiptPopup";
+import toast from "react-hot-toast";
+import { createOrder, deleteOrder } from "../../service/OrderService";
+import { AppConstants } from "../../Util/Constants";
 
 const CartSummary = ({
 	customerName,
@@ -11,12 +14,140 @@ const CartSummary = ({
 }) => {
 	const { cartItems } = useContext(AppContext);
 
+	const [isProcessing, setIsProcessing] = useState(false);
+	const [orderDetails, setOrderDetails] = useState("");
+
 	const totalAmount = cartItems.reduce(
 		(total, item) => total + item.price * item.quantity,
 		0
 	);
 	const tax = totalAmount * 0.01;
 	const grandTotal = totalAmount + tax;
+
+	const loadRazorpayScript = () => {
+		return new Promise((resolve, reject) => {
+			const script = document.createElement("script");
+			script.src = "https://checkout.razorpay.com/v1/checkout.js";
+			script.onload = () => resolve(true);
+			script.onerror = () => resolve(false);
+			document.body.appendChild(script);
+		});
+	};
+
+	//call the delete order method form db
+	const deleteOrderFailure = async (orderId) => {
+		try {
+			await deleteOrder(orderId);
+		} catch (error) {
+			console.log(error);
+			toast.error("Something went wrong");
+		}
+	};
+
+	const completePayment = async (paymentMode) => {
+		if (!customerName || !mobileNumber) {
+			toast.error("Please enter customet details");
+			return;
+		}
+		if (cartItems.length === 0) {
+			toast.error("Your cart is empty");
+			return;
+		}
+		const orderData = {
+			customerName,
+			phoneNumber: mobileNumber,
+			cartItems,
+			subtotal: totalAmount,
+			tax,
+			grandTotal,
+			paymentMode: paymentMode.toUpperCase(),
+		};
+		setIsProcessing(true);
+		try {
+			const response = await createOrder(orderData);
+			const saveData = response.data;
+			if (response.status === 201 && paymentMode === "cash") {
+				toast.success("Cash received");
+				setOrderDetails(saveData);
+			} else if (response.status === 201 && paymentMode === "upi") {
+				const razorpayLoaded = await loadRazorpayScript();
+				if (!razorpayLoaded) {
+					toast.error("Unable to razorpay");
+					await deleteOrderFailure(saveData.orderId);
+					return;
+				}
+
+				//create razorpay order
+				const razorpayResponse = createRazorpayOrder({
+					amount: grandTotal,
+					currency: "INR",
+				});
+				const options = {
+					Key: AppConstants.RAZORPAY_KEY_ID,
+					amount: razorpayResponse.data.currency,
+					order_id: razorpayResponse.data.id,
+					name: "My Retail Shop",
+					description: "Order payment",
+					handler: async function (response) {
+						await verifyPaymentHandler(response, saveData);
+					},
+					prefill: {
+						name: customerName,
+						Contact: mobileNumber,
+					},
+					theme: {
+						color: "#3399cc",
+					},
+					model: {
+						onDismiss: async () => {
+							await deleteOrderFailure(saveData.orderId);
+							toast.error("Payment cancelled");
+						},
+					},
+				};
+				const rzp = new window.Razorpay(options);
+				rzp.on("payment.failed", async (response) => {
+					await deleteOrderFailure(saveData.orderId);
+					toast.error("Payment failed");
+					console.error(response.error.description);
+				});
+				rzp.open();
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Payment processing failed");
+		} finally {
+			setIsProcessing(false);
+		}
+	};
+
+	const verifyPaymentHandler = async (response, saveOrder) => {
+		const paymentData = {
+			razorpayOrderId: response.razorpay_order_id,
+			razorpayPaymentId: response.razorpay_payment_id,
+			razorpaySignature: response.razorpay_signature,
+			orderId: saveOrder.orderId,
+		};
+		try {
+			const paymentResponse = await verifyPayement(paymentData);
+			if (response.status === 200) {
+				toast.success("Payment successful");
+				setOrderDetails({
+					...saveOrder,
+					paymentDetails: {
+						razorpayOrderId: response.razorpay_order_id,
+						razorpayPaymentId: response.razorpay_payment_id,
+						razorpaySignature: response.razorpay_signature,
+					},
+				});
+			} else {
+				toast.error("Payment processing failed");
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error("Payment failed");
+		}
+	};
 
 	return (
 		<div className="mt-3 text-gray-200">
