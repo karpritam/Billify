@@ -35,7 +35,7 @@ function Login() {
 			}
 		} catch (error) {
 			console.log(error);
-			toast.error(error.message || "Email/Password Invalid");
+			toast.error( "Email/Password Invalid"|| error.message );
 		} finally {
 			setLoading(false);
 		}

@@ -5,6 +5,10 @@ import ReceiptPopup from "../ReceiptPopup/ReceiptPopup";
 import toast from "react-hot-toast";
 import { createOrder, deleteOrder } from "../../service/OrderService";
 import { AppConstants } from "../../Util/Constants";
+import {
+	createRazorpayOrder,
+	verifyPayment,
+} from "../../service/PaymentService";
 
 const CartSummary = ({
 	customerName,
@@ -12,17 +16,33 @@ const CartSummary = ({
 	setCustomerName,
 	setMobileNumber,
 }) => {
-	const { cartItems } = useContext(AppContext);
+	const { cartItems, clearCart } = useContext(AppContext);
 
 	const [isProcessing, setIsProcessing] = useState(false);
-	const [orderDetails, setOrderDetails] = useState("");
+	const [orderDetails, setOrderDetails] = useState(null);
+	const [showPopup, setShowPopup] = useState(false);
 
 	const totalAmount = cartItems.reduce(
 		(total, item) => total + item.price * item.quantity,
 		0
 	);
-	const tax = totalAmount * 0.01;
+	const tax = totalAmount * 0.18;
 	const grandTotal = totalAmount + tax;
+
+	const clearAll = () => {
+		setCustomerName("");
+		setMobileNumber("");
+		clearCart();
+	};
+
+	const placeOrder = () => {
+		setShowPopup(true);
+		clearAll();
+	};
+
+	const handlePrintReceipt = () => {
+		window.print();
+	};
 
 	const loadRazorpayScript = () => {
 		return new Promise((resolve, reject) => {
@@ -46,7 +66,7 @@ const CartSummary = ({
 
 	const completePayment = async (paymentMode) => {
 		if (!customerName || !mobileNumber) {
-			toast.error("Please enter customet details");
+			toast.error("Please enter customer details");
 			return;
 		}
 		if (cartItems.length === 0) {
@@ -60,7 +80,7 @@ const CartSummary = ({
 			subtotal: totalAmount,
 			tax,
 			grandTotal,
-			paymentMode: paymentMode.toUpperCase(),
+			paymentMethod: paymentMode.toUpperCase(),
 		};
 		setIsProcessing(true);
 		try {
@@ -72,34 +92,40 @@ const CartSummary = ({
 			} else if (response.status === 201 && paymentMode === "upi") {
 				const razorpayLoaded = await loadRazorpayScript();
 				if (!razorpayLoaded) {
-					toast.error("Unable to razorpay");
+					toast.error("Unable to load razorpay");
 					await deleteOrderFailure(saveData.orderId);
 					return;
 				}
 
 				//create razorpay order
-				const razorpayResponse = createRazorpayOrder({
+				const razorpayResponse = await createRazorpayOrder({
 					amount: grandTotal,
 					currency: "INR",
 				});
+				if (!razorpayResponse || !razorpayResponse.data) {
+					toast.error("Failed to create Razorpay order");
+					await deleteOrderFailure(saveData.orderId);
+					return;
+				}
 				const options = {
-					Key: AppConstants.RAZORPAY_KEY_ID,
-					amount: razorpayResponse.data.currency,
+					key: AppConstants.RAZORPAY_KEY_ID,
+					amount: razorpayResponse.data.amount,
+					currency: razorpayResponse.data.currency,
 					order_id: razorpayResponse.data.id,
-					name: "My Retail Shop",
+					name: "PSK Retail Shop",
 					description: "Order payment",
 					handler: async function (response) {
 						await verifyPaymentHandler(response, saveData);
 					},
 					prefill: {
 						name: customerName,
-						Contact: mobileNumber,
+						contact: mobileNumber,
 					},
 					theme: {
 						color: "#3399cc",
 					},
 					model: {
-						onDismiss: async () => {
+						ondismiss: async () => {
 							await deleteOrderFailure(saveData.orderId);
 							toast.error("Payment cancelled");
 						},
@@ -129,8 +155,8 @@ const CartSummary = ({
 			orderId: saveOrder.orderId,
 		};
 		try {
-			const paymentResponse = await verifyPayement(paymentData);
-			if (response.status === 200) {
+			const paymentResponse = await verifyPayment(paymentData);
+			if (paymentResponse.status === 200) {
 				toast.success("Payment successful");
 				setOrderDetails({
 					...saveOrder,
@@ -176,19 +202,28 @@ const CartSummary = ({
 
 			{/* Payment Buttons */}
 			<div className="flex gap-3 mb-3">
-				<button className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition">
+				<button
+					className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition"
+					onClick={() => completePayment("cash")}
+					disabled={isProcessing}>
 					<Wallet size={18} />
-					Cash
+					{isProcessing ? "Processing..." : "Cash"}
 				</button>
-				<button className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
+				<button
+					className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
+					onClick={() => completePayment("upi")}
+					disabled={isProcessing}>
 					<CreditCard size={18} />
-					UPI
+					{isProcessing ? "Processing..." : "UPI"}
 				</button>
 			</div>
 
 			{/* Place Order */}
 			<div className="flex gap-3 mt-3">
-				<button className="flex-1 flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-lg transition">
+				<button
+					className="flex-1 flex items-center justify-center gap-2 cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 rounded-lg transition"
+					onClick={placeOrder}
+					disabled={isProcessing || !orderDetails}>
 					<Receipt size={18} />
 					Place Order
 				</button>
