@@ -1,6 +1,7 @@
 package com.psk.Billify_backend.service.implementation;
 
 import com.psk.Billify_backend.io.OrderResponse;
+import com.psk.Billify_backend.io.PaymentVerificationRequest;
 import com.psk.Billify_backend.io.RazorpayOrderResponse;
 import com.psk.Billify_backend.service.RazorpayService;
 import com.razorpay.Order;
@@ -27,9 +28,9 @@ public class RazorpayServiceImpl implements RazorpayService {
     public RazorpayOrderResponse createOrder(Double amount, String currency) throws RangeException, RazorpayException {
         RazorpayClient razorpayClient=new RazorpayClient(razorpayKeyId,razorpayKeySecret);
         JSONObject orderRequest=new JSONObject();
-        orderRequest.put("amount",amount*100);
+        orderRequest.put("amount", Math.round(amount * 100));
         orderRequest.put("currency",currency);
-        orderRequest.put("receipt","order receipt"+System.currentTimeMillis());
+        orderRequest.put("receipt","order_receipt_"+System.currentTimeMillis());
         orderRequest.put("payment_capture",1);
 
         Order order=razorpayClient.orders.create(orderRequest);
@@ -41,6 +42,7 @@ public class RazorpayServiceImpl implements RazorpayService {
                 .id(order.get("id"))
                 .entity(order.get("entity"))
                 .amount(order.get("amount"))
+                .currency(order.get("currency"))
                 .status(order.get("status"))
                 .created_at(order.get("created_at"))
                 .receipt(order.get("receipt"))

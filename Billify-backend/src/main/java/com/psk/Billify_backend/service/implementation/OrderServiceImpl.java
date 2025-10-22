@@ -117,7 +117,8 @@ public class OrderServiceImpl implements OrderService {
         return convertToResponse(existingOrder);
     }
 
+    //this is required for production level
     private boolean verifyRazorpaySignature(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature) {
-        return true;
+        return true; //it's now a test version
     }
 }
