@@ -60,6 +60,9 @@ const MenuBar = () => {
 						<Link to="/users" className="cursor-pointer hover:text-green-500">
 							MANAGE USERS
 						</Link>
+						<Link to="/orders" className="cursor-pointer hover:text-green-500">
+							ORDER HISTORY
+						</Link>
 					</ul>
 				</div>
 
@@ -159,6 +162,9 @@ const MenuBar = () => {
 						to="/users"
 						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						MANAGE USERS
+					</Link>
+					<Link to="/orders" className="cursor-pointer hover:text-green-500">
+						ORDER HISTORY
 					</Link>
 				</ul>
 			</nav>

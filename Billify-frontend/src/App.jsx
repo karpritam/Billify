@@ -8,6 +8,7 @@ import ManageItems from "./components/pages/ManageItems/ManageItems";
 import ManageUsers from "./components/pages/ManageUsers/ManageUsers";
 import { Toaster } from "react-hot-toast";
 import Login from "./components/pages/Login/Login";
+import OrderHistory from "./components/pages/OrderHistory/OrderHistory";
 
 const App = () => {
 	const location = useLocation();
@@ -22,6 +23,7 @@ const App = () => {
 				<Route path="/items" element={<ManageItems />} />
 				<Route path="/users" element={<ManageUsers />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/orders" element={<OrderHistory />} />
 				<Route path="/" element={<DashBoard />} />
 			</Routes>
 		</div>
