@@ -163,7 +163,10 @@ const MenuBar = () => {
 						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						MANAGE USERS
 					</Link>
-					<Link to="/orders" className="cursor-pointer hover:text-green-500">
+					<Link
+						onClick={() => setShowMobileMenu(false)}
+						to="/orders"
+						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
 						ORDER HISTORY
 					</Link>
 				</ul>
