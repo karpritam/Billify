@@ -29,9 +29,9 @@ const MenuBar = () => {
 	return (
 		<div className="relative">
 			{/* ----------- Top Navigation ------------- */}
-			<nav className="flex justify-between items-center top-0 left-0 w-full z-20 bg-gray-900">
-				<div className="container mx-auto flex justify-start gap-7 items-center py-4 px-6 md:px-20 lg:px-32">
-					<Link to="/">
+			<nav className="flex justify-between items-center top-0 left-0 w-full z-20 bg-gray-900 border-b">
+				<div className="container mx-auto flex justify-start gap-7 items-center py-4 md:px-6 sm:px-6 lg:px-6">
+					<Link to="/dashboard">
 						<img
 							className="cursor-pointer h-10 w-auto"
 							src={assets.bill}
@@ -171,7 +171,6 @@ const MenuBar = () => {
 					</Link>
 				</ul>
 			</nav>
-
 			{/* Overlay Background when Mobile Menu Open */}
 			{showMobileMenu && (
 				<div
