@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import MenuBar from "./components/MenuBar/MenuBar";
 import { Route, Routes, useLocation } from "react-router-dom";
 import DashBoard from "./components/pages/Dashboard/DashBoard";
@@ -9,9 +9,28 @@ import ManageUsers from "./components/pages/ManageUsers/ManageUsers";
 import { Toaster } from "react-hot-toast";
 import Login from "./components/pages/Login/Login";
 import OrderHistory from "./components/pages/OrderHistory/OrderHistory";
+import { AppContext } from "./context/AppContext";
 
 const App = () => {
 	const location = useLocation();
+	const { auth } = useContext(AppContext);
+
+	const LoginRoute = ({ element }) => {
+		if (auth.token) {
+			return <Navigate to="/dashboard" replace />;
+		}
+		return element;
+	};
+	const ProtectedRoute = ({ element, allowedRoles }) => {
+		if (!auth.token) {
+			return <Navigate to="/login" replace />;
+		}
+
+		if (allowedRoles && !allowedRoles.includes(auth.role)) {
+			return <Navigate to="/dashboard" replace />;
+		}
+		return element;
+	};
 	return (
 		<div>
 			{location.pathname !== "/login" && <MenuBar />}
@@ -19,10 +38,36 @@ const App = () => {
 			<Routes>
 				<Route path="/dashboard" element={<DashBoard />} />
 				<Route path="/explore" element={<Explore />} />
-				<Route path="/category" element={<ManageCategory />} />
-				<Route path="/items" element={<ManageItems />} />
-				<Route path="/users" element={<ManageUsers />} />
-				<Route path="/login" element={<Login />} />
+				{/* Admin only rotes */}
+				<Route
+					path="/category"
+					element={
+						<ProtectedRoute
+							element={<ManageCategory />}
+							allowedRoles={["ROLE_ADMIN"]}
+						/>
+					}
+				/>
+				<Route
+					path="/items"
+					element={
+						<ProtectedRoute
+							element={<ManageItems />}
+							allowedRoles={["ROLE_ADMIN"]}
+						/>
+					}
+				/>
+				<Route
+					path="/users"
+					element={
+						<ProtectedRoute
+							element={<ManageUsers />}
+							allowedRoles={["ROLE_ADMIN"]}
+						/>
+					}
+				/>
+
+				<Route path="/login" element={<LoginRoute element={<Login />} />} />
 				<Route path="/orders" element={<OrderHistory />} />
 				<Route path="/" element={<DashBoard />} />
 			</Routes>

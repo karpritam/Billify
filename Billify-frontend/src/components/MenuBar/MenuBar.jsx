@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { AppContext } from "../../context/AppContext";
 
 const MenuBar = () => {
 	const navigate = useNavigate();
-	const { setAuthData } = useContext(AppContext);
+	const location = useLocation();
+	const { setAuthData, auth } = useContext(AppContext);
 	const [showMobileMenu, setShowMobileMenu] = useState(false);
 	const [showProfileMenu, setShowProfileMenu] = useState(false);
 
@@ -14,7 +15,7 @@ const MenuBar = () => {
 		localStorage.removeItem("token");
 		localStorage.removeItem("role");
 		setAuthData(null, null);
-		navigate("/login");
+		navigate("/login", { replace: true });
 		toast.success("Logged out successfully");
 	};
 
@@ -25,6 +26,12 @@ const MenuBar = () => {
 			document.body.style.overflow = "auto";
 		};
 	}, [showMobileMenu]);
+
+	const isActive = (path) => {
+		return location.pathname.startsWith(path);
+	};
+
+	const isAdmin = auth.role === "ROLE_ADMIN";
 
 	return (
 		<div className="relative">
@@ -41,28 +48,76 @@ const MenuBar = () => {
 
 					{/* Desktop Menu */}
 					<ul className="hidden md:flex gap-7 text-white font-medium">
-						<Link
-							to="/dashboard"
-							className="cursor-pointer hover:text-green-500">
-							DASHBOARD
-						</Link>
-						<Link to="/explore" className="cursor-pointer hover:text-green-500">
-							EXPLORE
-						</Link>
-						<Link to="/items" className="cursor-pointer hover:text-green-500">
-							MANAGE ITEMS
-						</Link>
-						<Link
-							to="/category"
-							className="cursor-pointer hover:text-green-500">
-							MANAGE CATEGORIES
-						</Link>
-						<Link to="/users" className="cursor-pointer hover:text-green-500">
-							MANAGE USERS
-						</Link>
-						<Link to="/orders" className="cursor-pointer hover:text-green-500">
-							ORDER HISTORY
-						</Link>
+						<li>
+							<Link
+								to="/dashboard"
+								className={`cursor-pointer hover:text-green-500 ${
+									isActive("/dashboard")
+										? "font-bold text-warning text-green-500"
+										: ""
+								}`}>
+								DASHBOARD
+							</Link>
+						</li>
+						<li>
+							<Link
+								to="/explore"
+								className={`cursor-pointer hover:text-green-500 ${
+									isActive("/explore")
+										? "font-bold text-warning text-green-500"
+										: ""
+								}`}>
+								EXPLORE
+							</Link>
+						</li>
+						{isAdmin && (
+							<>
+								<li>
+									<Link
+										to="/items"
+										className={`cursor-pointer hover:text-green-500 ${
+											isActive("/items")
+												? "font-bold text-warning text-green-500"
+												: ""
+										}`}>
+										MANAGE ITEMS
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/category"
+										className={`cursor-pointer hover:text-green-500 ${
+											isActive("/category")
+												? "font-bold text-warning text-green-500"
+												: ""
+										}`}>
+										MANAGE CATEGORIES
+									</Link>
+								</li>
+								<li>
+									<Link
+										to="/users"
+										className={`cursor-pointer hover:text-green-500 ${
+											isActive("/users")
+												? "font-bold text-warning text-green-500"
+												: ""
+										}`}>
+										MANAGE USERS
+									</Link>
+								</li>
+							</>
+						)}
+						<li>
+							<Link
+								to="/orders"
+								className={`cursor-pointer hover:text-green-500 ${
+									isActive("/orders")
+										? "font-bold text-warning text-green-500"
+										: ""
+								}`}>
+								ORDER HISTORY
+							</Link>
+						</li>
 					</ul>
 				</div>
 
@@ -136,37 +191,65 @@ const MenuBar = () => {
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/dashboard"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
+						className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+							isActive("/dashboard")
+								? "rounded-full text-warning bg-green-200"
+								: ""
+						}`}>
 						DASHBOARD
 					</Link>
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/explore"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
+						className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+							isActive("/explore")
+								? "rounded-full text-warning bg-green-200"
+								: ""
+						}`}>
 						EXPLORE
 					</Link>
-					<Link
-						onClick={() => setShowMobileMenu(false)}
-						to="/items"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
-						MANAGE ITEMS
-					</Link>
-					<Link
-						onClick={() => setShowMobileMenu(false)}
-						to="/category"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
-						MANAGE CATEGORIES
-					</Link>
-					<Link
-						onClick={() => setShowMobileMenu(false)}
-						to="/users"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
-						MANAGE USERS
-					</Link>
+					{isAdmin && (
+						<>
+							<Link
+								onClick={() => setShowMobileMenu(false)}
+								to="/items"
+								className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+									isActive("/items")
+										? "rounded-full text-warning bg-green-200"
+										: ""
+								}`}>
+								MANAGE ITEMS
+							</Link>
+							<Link
+								onClick={() => setShowMobileMenu(false)}
+								to="/category"
+								className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+									isActive("/category")
+										? "rounded-full text-warning bg-green-200"
+										: ""
+								}`}>
+								MANAGE CATEGORIES
+							</Link>
+							<Link
+								onClick={() => setShowMobileMenu(false)}
+								to="/users"
+								className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+									isActive("/users")
+										? "rounded-full text-warning bg-green-200"
+										: ""
+								}`}>
+								MANAGE USERS
+							</Link>
+						</>
+					)}
 					<Link
 						onClick={() => setShowMobileMenu(false)}
 						to="/orders"
-						className="px-4 py-2 rounded-full hover:bg-green-200 inline-block">
+						className={`px-4 py-2 rounded-full hover:bg-green-200 inline-block ${
+							isActive("/orders")
+								? "rounded-full text-warning bg-green-200"
+								: ""
+						}`}>
 						ORDER HISTORY
 					</Link>
 				</ul>

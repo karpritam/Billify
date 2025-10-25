@@ -46,6 +46,7 @@ export const AppContextProvider = (props) => {
 			}
 			const response = await fetchCategory();
 			const itemResponse = await fetchItems();
+			console.log("item response", itemResponse);
 			setCategories(response.data);
 			setItemsData(itemResponse.data);
 		}
@@ -54,7 +55,7 @@ export const AppContextProvider = (props) => {
 	}, []);
 
 	const setAuthData = (token, role) => {
-		setAuth((token, role));
+		setAuth({ token, role });
 	};
 
 	const clearCart = () => {

@@ -55,14 +55,14 @@ const DashBoard = () => {
 		);
 	});
 
-	// If there are no orders today, show a message or nothing
-	if (todaysOrders.length === 0) {
-		return (
-			<div className="flex items-center justify-center h-screen text-gray-300 text-lg font-medium">
-				No orders today.
-			</div>
-		);
-	}
+	// // If there are no orders today, show a message or nothing
+	// if (todaysOrders.length === 0) {
+	// 	return (
+	// 		<div className="flex items-start justify-center h-screen pt-2 text-gray-500 text-lg font-medium bg-gray-900">
+	// 			No orders today.
+	// 		</div>
+	// 	);
+	// }
 
 	return (
 		<div className=" overflow-y-auto overflow-x-hidden h-[calc(100vh-4.65rem)]  flex flex-col bg-gray-900 text-gray-100 p-6">
