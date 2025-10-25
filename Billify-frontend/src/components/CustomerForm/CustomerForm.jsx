@@ -7,7 +7,7 @@ const CustomerForm = ({
 	setMobileNumber,
 }) => {
 	return (
-		<div className="p-4">
+		<div className="p-4 sm:p-2">
 			{/* Customer Name */}
 			<div className="mb-4">
 				<div className="flex items-center gap-3">

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { deleteUser } from "../../../../service/UserService";
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { Users } from "lucide-react";
 
 const UserList = ({ users, setUsers }) => {
 	const [searchItem, setSearchItem] = useState("");
@@ -71,6 +72,7 @@ const UserList = ({ users, setUsers }) => {
 							className="flex items-center justify-between bg-gray-800/60 border border-gray-600 p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300">
 							<div>
 								<h5 className="text-lg font-semibold text-white">
+									<Users className="text-blue-400" size={20} />
 									{user.name}
 								</h5>
 								<p className="text-sm text-gray-300">{user.email}</p>

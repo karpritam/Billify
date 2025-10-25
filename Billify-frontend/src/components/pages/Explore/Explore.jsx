@@ -13,9 +13,9 @@ const Explore = () => {
 	const [mobileNumber, setMobileNumber] = useState("");
 
 	return (
-		<div className="flex gap-6 h-[calc(100vh-4.56rem)] bg-[#2c3335] text-gray-100 p-6 box-border">
+		<div className="flex gap-6 h-[calc(100vh-4.56rem)] bg-gray-900 text-gray-100 p-6 box-border">
 			{/* ---------- Left Section ---------- */}
-			<div className="flex-[0.7] flex flex-col border border-gray-700 rounded-xl p-4 bg-[#1e2426] shadow-md">
+			<div className="flex-[0.7] flex flex-col border border-gray-700 rounded-xl p-4  bg-[#1e2426] shadow-md">
 				{/* Categories */}
 				<div className="flex-[0.35] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
 					<DisplayCategory
@@ -28,7 +28,7 @@ const Explore = () => {
 				<hr className="my-4 border-gray-600" />
 
 				{/* Items */}
-				<div className="flex-[0.65] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+				<div className="flex-[0.65]  overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
 					<DisplayItems selectedCategory={selectedCategory} />
 				</div>
 			</div>
