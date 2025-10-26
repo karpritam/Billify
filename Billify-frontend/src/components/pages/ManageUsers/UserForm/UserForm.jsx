@@ -66,6 +66,7 @@ const UserForm = ({ setUsers }) => {
 							<input
 								onChange={onChangeHandler}
 								value={data.name}
+								required
 								name="name"
 								type="text"
 								id="name"
@@ -82,6 +83,7 @@ const UserForm = ({ setUsers }) => {
 							<input
 								onChange={onChangeHandler}
 								value={data.email}
+								required
 								name="email"
 								type="email"
 								id="email"
@@ -98,6 +100,7 @@ const UserForm = ({ setUsers }) => {
 							<input
 								onChange={onChangeHandler}
 								value={data.password}
+								required
 								name="password"
 								type="password"
 								id="password"

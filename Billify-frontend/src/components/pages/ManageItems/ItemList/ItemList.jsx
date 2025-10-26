@@ -70,32 +70,36 @@ const ItemList = () => {
 
 			{/* Items List */}
 			<div className="flex flex-col gap-4">
-				{filteredItems.map((item, index) => (
-					<div
-						key={index}
-						className="flex items-center justify-between bg-gray-800/60  border border-gray-600 p-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
-						<div className="flex items-center gap-4">
-							<img
-								src={item.imgUrl}
-								alt={item.name}
-								className="w-16 h-16 rounded-lg object-cover"
-							/>
-							<div>
-								<h6 className="font-bold text-lg text-white">{item.name}</h6>
-								<p className="text-sm text-gray-300">
-									Category: {item.categoryName}
-								</p>
-								<p className="text-yellow-400 font-semibold">₹{item.price}</p>
+				{filteredItems.length > 0 ? (
+					filteredItems.map((item, index) => (
+						<div
+							key={index}
+							className="flex items-center justify-between bg-gray-800/60  border border-gray-600 p-3 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+							<div className="flex items-center gap-4">
+								<img
+									src={item.imgUrl}
+									alt={item.name}
+									className="w-16 h-16 rounded-lg object-cover"
+								/>
+								<div>
+									<h6 className="font-bold text-lg text-white">{item.name}</h6>
+									<p className="text-sm text-gray-300">
+										Category: {item.categoryName}
+									</p>
+									<p className="text-yellow-400 font-semibold">₹{item.price}</p>
+								</div>
 							</div>
+							<button
+								onClick={() => removeItem(item.itemId)}
+								className="bg-red-600 hover:bg-red-700 p-2 rounded-lg transition-colors duration-300"
+								title="Delete">
+								<TrashIcon className="h-5 w-5 text-white" />
+							</button>
 						</div>
-						<button
-							onClick={() => removeItem(item.itemId)}
-							className="bg-red-600 hover:bg-red-700 p-2 rounded-lg transition-colors duration-300"
-							title="Delete">
-							<TrashIcon className="h-5 w-5 text-white" />
-						</button>
-					</div>
-				))}
+					))
+				) : (
+					<p className="mt-2 text-gray-400 text-center">No items found</p>
+				)}
 			</div>
 		</div>
 	);

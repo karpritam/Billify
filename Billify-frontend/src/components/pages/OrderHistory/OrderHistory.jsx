@@ -42,7 +42,7 @@ const OrderHistory = () => {
 
 	if (loading) {
 		return (
-			<div className="flex items-center justify-center h-screen text-gray-400 text-lg">
+			<div className="flex items-center justify-center h-[calc(100vh-4.64rem)] text-gray-500 text-lg bg-gray-900">
 				<Clock className="animate-spin mr-2" size={20} /> Loading orders...
 			</div>
 		);
@@ -50,8 +50,8 @@ const OrderHistory = () => {
 
 	if (orders.length === 0) {
 		return (
-			<div className="flex items-start justify-center h-screen text-gray-500 text-lg bg-gray-900">
-				<ShoppingBag className="mr-2" size={20} /> No orders found.
+			<div className="flex p-3 items-start justify-center h-screen text-gray-500 text-lg bg-gray-900">
+				<ShoppingBag className="mr-2 mt-1" size={20} /> No orders found.
 			</div>
 		);
 	}

@@ -21,6 +21,7 @@ const CustomerForm = ({
 						placeholder="Enter customer name"
 						onChange={(e) => setCustomerName(e.target.value)}
 						value={customerName}
+						required
 					/>
 				</div>
 			</div>
@@ -38,6 +39,7 @@ const CustomerForm = ({
 						placeholder="Enter mobile number"
 						onChange={(e) => setMobileNumber(e.target.value)}
 						value={mobileNumber}
+						required
 					/>
 				</div>
 			</div>

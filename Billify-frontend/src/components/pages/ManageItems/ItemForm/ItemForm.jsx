@@ -16,7 +16,6 @@ const ItemForm = () => {
 		description: "",
 	});
 
-
 	const onChangeHandler = (e) => {
 		const { name, value } = e.target;
 		setData((prev) => ({ ...prev, [name]: value }));
@@ -53,7 +52,7 @@ const ItemForm = () => {
 			if (response.status === 201) {
 				setItemsData([...itemsData, response.data]);
 				setCategories((prevCategories) => {
-					prevCategories.map((category) =>
+					return prevCategories.map((category) =>
 						category.categoryId === data.categoryId
 							? { ...category, items: category.items + 1 }
 							: category
@@ -107,6 +106,7 @@ const ItemForm = () => {
 								<input
 									onChange={onChangeHandler}
 									value={data.name}
+									required
 									type="text"
 									name="name"
 									placeholder="Item Name"
@@ -122,6 +122,7 @@ const ItemForm = () => {
 								<select
 									onChange={onChangeHandler}
 									value={data.categoryId}
+									required
 									name="categoryId"
 									className="w-full rounded-lg border border-gray-300 p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
 									<option value="">-- SELECT CATEGORY --</option>
@@ -141,6 +142,7 @@ const ItemForm = () => {
 								<input
 									onChange={onChangeHandler}
 									value={data.price}
+									required
 									type="number"
 									name="price"
 									placeholder="₹200.00"
@@ -167,10 +169,8 @@ const ItemForm = () => {
 								<button
 									type="submit"
 									disabled={loading}
-									className={`${
-										loading ? "bg-blue-300" : "bg-blue-500 hover:bg-blue-600"
-									} text-white px-4 py-2 rounded-md transition duration-300`}>
-									{loading ? "Saving..." : "Save"}
+									className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300">
+									{loading ? "Loading..." : "Submit"}
 								</button>
 							</div>
 						</form>

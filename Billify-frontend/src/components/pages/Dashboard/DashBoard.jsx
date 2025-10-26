@@ -30,7 +30,7 @@ const DashBoard = () => {
 
 	if (loading) {
 		return (
-			<div className="flex items-center justify-center h-screen text-gray-200 text-lg font-medium">
+			<div className="flex items-center justify-center h-[calc(100vh-4.64rem)] text-gray-200 text-lg bg-gray-900 font-medium">
 				Loading Dashboard...
 			</div>
 		);
@@ -38,7 +38,7 @@ const DashBoard = () => {
 
 	if (!data) {
 		return (
-			<div className="flex items-center justify-center h-screen text-red-400 text-lg font-semibold">
+			<div className="flex p-3 items-start justify-center h-screen text-gray-500 bg-gray-900 text-lg ">
 				Failed to load the dashboard data...
 			</div>
 		);

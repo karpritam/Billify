@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import MenuBar from "./components/MenuBar/MenuBar";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import DashBoard from "./components/pages/Dashboard/DashBoard";
 import Explore from "./components/pages/Explore/Explore";
 import ManageCategory from "./components/pages/ManageCategory/ManageCategory";
@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import Login from "./components/pages/Login/Login";
 import OrderHistory from "./components/pages/OrderHistory/OrderHistory";
 import { AppContext } from "./context/AppContext";
+import NotFound from "./components/pages/NotFound/NotFound";
 
 const App = () => {
 	const location = useLocation();
@@ -70,6 +71,7 @@ const App = () => {
 				<Route path="/login" element={<LoginRoute element={<Login />} />} />
 				<Route path="/orders" element={<OrderHistory />} />
 				<Route path="/" element={<DashBoard />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
 	);

@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 const CategoryList = () => {
 	const { categories, setCategories } = useContext(AppContext);
 	const [searchItem, setSearchItem] = useState("");
-	const filterCtaegories = categories.filter((category) =>
-		category.name.toLowerCase().includes(searchItem.toLowerCase())
+	const filterCategories = categories.filter((category) =>
+		category.name?.toLowerCase().includes(searchItem.toLowerCase())
 	);
 	const deleteByCategoryId = (categoryId) => {
 		const toastId = toast(
@@ -76,42 +76,46 @@ const CategoryList = () => {
 				</div>
 			</div>
 			{/* Categories */}
-			<div className="flex flex-col gap-4 ">
-				{filterCtaegories.map((category, index) => (
-					<div key={index}>
-						{/* Left Side: Image and Text */}
-						<div
-							className="rounded-lg p-3 flex items-center justify-between w-full"
-							style={{ backgroundColor: category.bgColor }}>
-							<div className="flex items-center">
-								<div className="md:mr-4">
-									<img
-										src={category.imgUrl}
-										alt={category.name}
-										className="md:w-[70px] h-[70px] rounded-lg border-2 border-white/50 object-cover"
-									/>
+			<div className="flex flex-col gap-4 overflow-auto">
+				{filterCategories.length > 0 ? (
+					filterCategories.map((category, index) => (
+						<div key={index}>
+							{/* Left Side: Image and Text */}
+							<div
+								className="rounded-lg p-3 flex items-center justify-between w-full"
+								style={{ backgroundColor: category.bgColor }}>
+								<div className="flex items-center">
+									<div className="md:mr-4">
+										<img
+											src={category.imgUrl}
+											alt={category.name}
+											className="md:w-[70px] h-[70px] rounded-lg border-2 border-white/50 object-cover"
+										/>
+									</div>
+									<div className="flex-grow-1">
+										<h5 className="mb-1 sm:pl-2 font-bold md:text-lg  text-white">
+											{category.name}
+										</h5>
+										<p className="mb-0 sm:pl-2 md:text-sm text-white/80">
+											{category.items} Items
+										</p>
+									</div>
 								</div>
-								<div className="flex-grow-1">
-									<h5 className="mb-1 sm:pl-2 font-bold md:text-lg  text-white">
-										{category.name}
-									</h5>
-									<p className="mb-0 sm:pl-2 md:text-sm text-white/80">
-										{category.items} Items
-									</p>
+								{/* Right Side: Delete Button */}
+								<div>
+									<button
+										onClick={() => deleteByCategoryId(category.categoryId)}
+										className="bg-red-600 hover:bg-red-700 p-2 rounded transition-colors duration-300"
+										title="Delete">
+										<TrashIcon className="h-5 w-5 text-white" />
+									</button>
 								</div>
-							</div>
-							{/* Right Side: Delete Button */}
-							<div>
-								<button
-									onClick={() => deleteByCategoryId(category.categoryId)}
-									className="bg-red-600 hover:bg-red-700 p-2 rounded transition-colors duration-300"
-									title="Delete">
-									<TrashIcon className="h-5 w-5 text-white" />
-								</button>
 							</div>
 						</div>
-					</div>
-				))}
+					))
+				) : (
+					<p className="mt-2 text-gray-400 text-center">No categories found</p>
+				)}
 			</div>
 		</div>
 	);
