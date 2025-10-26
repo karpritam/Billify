@@ -132,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderResponse> findByRecentOrders() {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 8);
         return orderEntityRepository.findRecentOrders(pageable)
                 .stream()
                 .map(orderEntity -> convertToResponse(orderEntity))

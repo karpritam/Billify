@@ -9,8 +9,15 @@ import com.psk.Billify_backend.service.CategoryService;
 import com.psk.Billify_backend.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,8 +31,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final ItemRepository itemRepository;
 
     @Override
-    public CategoryResponse add(CategoryRequest request, MultipartFile file) {
-        String imgUrl=fileUploadService.uploadFile(file);
+    public CategoryResponse add(CategoryRequest request, MultipartFile file) throws IOException {
+//        String imgUrl=fileUploadService.uploadFile(file); //-->this is for aws access
+        String fileName=UUID.randomUUID().toString()+"."+ StringUtils.getFilenameExtension(file.getOriginalFilename());
+        Path uploadPath=Paths.get("uploads").toAbsolutePath().normalize();
+        Files.createDirectories(uploadPath);
+        Path targetLocation=uploadPath.resolve(fileName);
+        Files.copy(file.getInputStream(),targetLocation, StandardCopyOption.REPLACE_EXISTING);
+        String imgUrl="http://localhost:8080/api/v1.0/uploads/"+fileName;
         CategoryEntity newCategory=convertToEntity(request);
         newCategory.setImgUrl(imgUrl);
         newCategory=categoryRepository.save(newCategory);
@@ -46,10 +59,15 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(()->new RuntimeException("Category not found: "+categoryId));
 
         // Delete image if exists
-//        fileUploadService.deleteFile(existingCategory.getImgUrl());
+//        fileUploadService.deleteFile(existingCategory.getImgUrl()); //-=>this is for aws
         String imgUrl = existingCategory.getImgUrl();
-        if (imgUrl != null && !imgUrl.isEmpty()) {
-            fileUploadService.deleteFile(imgUrl);
+        String  fileName=imgUrl.substring(imgUrl.lastIndexOf("/")+1);
+        Path uploadPath=Paths.get("uploads").toAbsolutePath().normalize();
+        Path filePath=uploadPath.resolve(fileName);
+        try{
+            Files.deleteIfExists(filePath);
+        }catch (IOException e){
+            throw new RuntimeException("Failed to delete image file: " + fileName, e);
         }
 
         categoryRepository.delete(existingCategory);

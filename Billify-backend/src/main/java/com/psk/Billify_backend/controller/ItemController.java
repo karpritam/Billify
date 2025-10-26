@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import software.amazon.awssdk.services.s3.model.MultipartUpload;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,8 @@ public class ItemController {
             return itemService.add(itemRequest, file);
         }catch(JsonProcessingException ex){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error occurred while processing the json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
