@@ -57,7 +57,7 @@ const OrderHistory = () => {
 	}
 
 	return (
-		<div className="overflow-y-auto overflow-x-hidden h-[calc(100vh-4.65rem)] flex flex-col bg-gray-900 text-gray-100">
+		<div className="relative  overflow-y-auto overflow-x-hidden h-[calc(100vh-4.65rem)] flex flex-col bg-gray-900 text-gray-100">
 			<div className="p-4 flex-none border-b-2 border-gray-700 flex items-center justify-between">
 				<h2 className="text-2xl font-semibold flex items-center gap-2">
 					<ShoppingBag className="text-blue-400" /> All Orders
@@ -67,8 +67,8 @@ const OrderHistory = () => {
 			<div className="flex-1 overflow-auto p-6">
 				<div className="overflow-x-auto bg-gray-800 rounded-xl shadow-md">
 					<table className="min-w-full border-collapse">
-						<thead>
-							<tr className="bg-gray-700 text-gray-200 text-sm uppercase tracking-wider">
+						<thead className="">
+							<tr className=" bg-gray-700 text-gray-200 text-sm uppercase tracking-wider">
 								<th className="px-4 py-3 text-left">Order ID</th>
 								<th className="px-4 py-3 text-left">Customer</th>
 								<th className="px-4 py-3 text-left">Items</th>

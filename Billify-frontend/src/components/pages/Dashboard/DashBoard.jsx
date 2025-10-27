@@ -30,8 +30,8 @@ const DashBoard = () => {
 
 	if (loading) {
 		return (
-			<div className="flex items-center justify-center h-[calc(100vh-4.64rem)] text-gray-200 text-lg bg-gray-900 font-medium">
-				Loading Dashboard...
+			<div className="flex items-center justify-center h-[calc(100vh-4.64rem)] text-gray-200  bg-gray-900">
+				<Clock className="animate-spin mr-2" size={20} /> Loading Dashboard...
 			</div>
 		);
 	}
