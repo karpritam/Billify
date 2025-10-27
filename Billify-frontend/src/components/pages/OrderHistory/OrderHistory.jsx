@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { latestOrders } from "../../../service/OrderService";
+import { deleteOrder, latestOrders } from "../../../service/OrderService";
 import {
 	Clock,
 	CreditCard,
@@ -7,6 +7,8 @@ import {
 	AlertCircle,
 	ShoppingBag,
 } from "lucide-react";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import toast from "react-hot-toast";
 
 const OrderHistory = () => {
 	const [orders, setOrders] = useState([]);
@@ -19,6 +21,7 @@ const OrderHistory = () => {
 				setOrders(response.data);
 			} catch (error) {
 				console.error("Error fetching orders:", error);
+				toast.error("Failed to load orders");
 			} finally {
 				setLoading(false);
 			}
@@ -40,6 +43,18 @@ const OrderHistory = () => {
 		return new Date(dateString).toLocaleDateString("en-US", options);
 	};
 
+	const deleteByOrderId = async (id) => {
+		const toastId = toast.loading("Deleting order...");
+		try {
+			await deleteOrder(id);
+			setOrders((prev) => prev.filter((order) => order.orderId !== id));
+			toast.success("Order deleted successfully", { id: toastId });
+		} catch (error) {
+			console.error(error);
+			toast.error("Unable to delete the order", { id: toastId });
+		}
+	};
+
 	if (loading) {
 		return (
 			<div className="flex items-center justify-center h-[calc(100vh-4.64rem)] text-gray-500 text-lg bg-gray-900">
@@ -57,7 +72,7 @@ const OrderHistory = () => {
 	}
 
 	return (
-		<div className="relative  overflow-y-auto overflow-x-hidden h-[calc(100vh-4.65rem)] flex flex-col bg-gray-900 text-gray-100">
+		<div className="relative overflow-y-auto overflow-x-hidden h-[calc(100vh-4.65rem)] flex flex-col bg-gray-900 text-gray-100">
 			<div className="p-4 flex-none border-b-2 border-gray-700 flex items-center justify-between">
 				<h2 className="text-2xl font-semibold flex items-center gap-2">
 					<ShoppingBag className="text-blue-400" /> All Orders
@@ -67,8 +82,8 @@ const OrderHistory = () => {
 			<div className="flex-1 overflow-auto p-6">
 				<div className="overflow-x-auto bg-gray-800 rounded-xl shadow-md">
 					<table className="min-w-full border-collapse">
-						<thead className="">
-							<tr className=" bg-gray-700 text-gray-200 text-sm uppercase tracking-wider">
+						<thead>
+							<tr className="bg-gray-700 text-gray-200 text-sm uppercase tracking-wider sticky top-0">
 								<th className="px-4 py-3 text-left">Order ID</th>
 								<th className="px-4 py-3 text-left">Customer</th>
 								<th className="px-4 py-3 text-left">Items</th>
@@ -76,6 +91,7 @@ const OrderHistory = () => {
 								<th className="px-4 py-3 text-left">Payment</th>
 								<th className="px-4 py-3 text-left">Status</th>
 								<th className="px-4 py-3 text-left">Date</th>
+								<th className="px-4 py-3 text-left"></th>
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-gray-700">
@@ -134,6 +150,14 @@ const OrderHistory = () => {
 									</td>
 									<td className="px-4 py-3 text-sm text-gray-300">
 										{formatDate(order.createdAt)}
+									</td>
+									<td className="px-4 py-3">
+										<button
+											onClick={() => deleteByOrderId(order.orderId)}
+											className="bg-red-600 hover:bg-red-700 p-2 rounded-lg transition-colors duration-300"
+											title="Delete">
+											<TrashIcon className="h-4 w-4 text-white" />
+										</button>
 									</td>
 								</tr>
 							))}

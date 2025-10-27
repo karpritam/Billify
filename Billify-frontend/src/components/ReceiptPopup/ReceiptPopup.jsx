@@ -6,7 +6,7 @@ const ReceiptPopup = ({ orderDetails, onClose, onPrint }) => {
 
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 text-gray-900">
-			<div className="bg-white rounded-xl shadow-lg w-[400px] max-w-[90%] max-h-[90vh] overflow-y-auto p-6">
+			<div className="bg-white rounded-xl shadow-lg w-[400px] max-w-[90%] max-h-[90vh] overflow-y-auto p-6 border-[10px] border-green-500 print:w-full print:max-w-[500px] print:shadow print:border-[10px] print:border-green-500  print:rounded-xl">
 				{/* Success Icon */}
 				<div className="text-center mb-4">
 					<CheckCircle className="text-green-500 w-10 h-10 inline-block" />
@@ -81,9 +81,14 @@ const ReceiptPopup = ({ orderDetails, onClose, onPrint }) => {
 						</p>
 					</div>
 				)}
+				{/* Footer */}
+				<div className="text-center text-[14px] mt-3 border-t border-gray-300 pt-2">
+					<p>Visit Again 🙏</p>
+					<p>Powered by <span className="font-semibold">Billify</span></p>
+				</div>
 
 				{/* Buttons */}
-				<div className="flex justify-end gap-3 mt-6">
+				<div className="flex justify-end gap-3 mt-6 btn print:hidden">
 					<button
 						className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition"
 						onClick={onPrint}>

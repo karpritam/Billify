@@ -36,7 +36,7 @@ const MenuBar = () => {
 	return (
 		<div className="relative">
 			{/* ----------- Top Navigation ------------- */}
-			<nav className="flex justify-between items-center top-0 left-0 w-full z-20 bg-gray-900 border-b">
+			<nav className="fixed flex justify-between items-center top-0 left-0 w-full z-20 bg-gray-900 border-b">
 				<div className="container mx-auto flex justify-start gap-7 items-center py-4 md:px-6 sm:px-6 lg:px-6">
 					<Link to="/dashboard">
 						<img
@@ -173,7 +173,7 @@ const MenuBar = () => {
 
 			{/* ----------- Mobile Slide Menu ----------- */}
 			<nav
-				className={`fixed top-0 right-0 h-full w-[70%] sm:w-[50%] bg-green-100 z-40 transition-transform duration-500 ease-in-out ${
+				className={`fixed top-0 right-0 h-full w-[70%] sm:w-[40%] bg-green-100 z-40 transition-transform duration-500 ease-in-out ${
 					showMobileMenu ? "translate-x-0" : "translate-x-full"
 				}`}>
 				{/* Close Button */}

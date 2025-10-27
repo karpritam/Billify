@@ -22,6 +22,7 @@ const App = () => {
 		}
 		return element;
 	};
+
 	const ProtectedRoute = ({ element, allowedRoles }) => {
 		if (!auth.token) {
 			return <Navigate to="/login" replace />;
@@ -32,47 +33,53 @@ const App = () => {
 		}
 		return element;
 	};
-	return (
-		<div>
-			{location.pathname !== "/login" && <MenuBar />}
-			<Toaster position="top-center" reverseOrder={true} />
-			<Routes>
-				<Route path="/dashboard" element={<DashBoard />} />
-				<Route path="/explore" element={<Explore />} />
-				{/* Admin only rotes */}
-				<Route
-					path="/category"
-					element={
-						<ProtectedRoute
-							element={<ManageCategory />}
-							allowedRoles={["ROLE_ADMIN"]}
-						/>
-					}
-				/>
-				<Route
-					path="/items"
-					element={
-						<ProtectedRoute
-							element={<ManageItems />}
-							allowedRoles={["ROLE_ADMIN"]}
-						/>
-					}
-				/>
-				<Route
-					path="/users"
-					element={
-						<ProtectedRoute
-							element={<ManageUsers />}
-							allowedRoles={["ROLE_ADMIN"]}
-						/>
-					}
-				/>
 
-				<Route path="/login" element={<LoginRoute element={<Login />} />} />
-				<Route path="/orders" element={<OrderHistory />} />
-				<Route path="/" element={<DashBoard />} />
-				<Route path="*" element={<NotFound />} />
-			</Routes>
+	return (
+		<div className="min-h-screen bg-gray-900">
+			{location.pathname !== "/login" && <MenuBar />}
+
+			{/*Add top padding only when MenuBar is visible */}
+			<div className={location.pathname !== "/login" ? "pt-16" : ""}>
+				<Toaster position="top-center" reverseOrder={true} />
+				<Routes>
+					<Route path="/dashboard" element={<DashBoard />} />
+					<Route path="/explore" element={<Explore />} />
+
+					{/* Admin only routes */}
+					<Route
+						path="/category"
+						element={
+							<ProtectedRoute
+								element={<ManageCategory />}
+								allowedRoles={["ROLE_ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/items"
+						element={
+							<ProtectedRoute
+								element={<ManageItems />}
+								allowedRoles={["ROLE_ADMIN"]}
+							/>
+						}
+					/>
+					<Route
+						path="/users"
+						element={
+							<ProtectedRoute
+								element={<ManageUsers />}
+								allowedRoles={["ROLE_ADMIN"]}
+							/>
+						}
+					/>
+
+					<Route path="/login" element={<LoginRoute element={<Login />} />} />
+					<Route path="/orders" element={<OrderHistory />} />
+					<Route path="/" element={<DashBoard />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</div>
 		</div>
 	);
 };
