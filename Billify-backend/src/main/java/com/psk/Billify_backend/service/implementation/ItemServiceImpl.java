@@ -86,19 +86,23 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(String itemId) {
-        ItemEntity existingItem=itemRepository.findByItemId(itemId)
-                .orElseThrow(()-> new RuntimeException("Item not found: "+itemId));
+        ItemEntity existingItem = itemRepository.findByItemId(itemId)
+                .orElseThrow(() -> new RuntimeException("Item not found: " + itemId));
 
-//        boolean isFileDelete= fileUploadService.deleteFile(existingItem.getImgUrl()); //--> for aws
+        //        boolean isFileDelete= fileUploadService.deleteFile(existingItem.getImgUrl()); //--> for aws
+        // Delete image file
         String imgUrl = existingItem.getImgUrl();
-        String  fileName=imgUrl.substring(imgUrl.lastIndexOf("/")+1);
-        Path uploadPath=Paths.get("uploads").toAbsolutePath().normalize();
-        Path filePath=uploadPath.resolve(fileName);
-        try{
+        String fileName = imgUrl.substring(imgUrl.lastIndexOf("/") + 1);
+        Path uploadPath = Paths.get("uploads").toAbsolutePath().normalize();
+        Path filePath = uploadPath.resolve(fileName);
+        try {
             Files.deleteIfExists(filePath);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Failed to delete image file: " + fileName, e);
         }
 
+        // Delete item from database
+        itemRepository.delete(existingItem);
     }
+
 }
