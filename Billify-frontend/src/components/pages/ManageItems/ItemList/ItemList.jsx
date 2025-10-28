@@ -53,7 +53,7 @@ const ItemList = () => {
 	return (
 		<div className="overflow-y-auto overflow-x-hidden">
 			{/* Search Bar */}
-			<div className="mb-4">
+			<div className="sticky top-0 z-10 bg-[#1e2426] pb-2">
 				<div className="flex mb-2 border border-gray-300 rounded-lg overflow-hidden">
 					<input
 						onChange={(e) => setSearchItem(e.target.value)}
