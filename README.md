@@ -1,8 +1,8 @@
-💳 Billify — Smart Billing Software
+# 💳 Billify — Smart Billing Software
 
 Billify is a lightweight and efficient billing management system designed to simplify sales operations for small and medium businesses. It helps users seamlessly manage categories, items, customers, and billing processes — all from a responsive and intuitive interface.
 
-🚀 Features
+# 🚀 Features
 ✅ Category & Item Management
 
 Create, edit, and delete product categories.
@@ -37,7 +37,7 @@ Built using modern React + Tailwind CSS components.
 
 Fully responsive for desktop, tablet, and mobile users.
 
-🛠️ Tech Stack
+# 🛠️ Tech Stack
 Layer	Technology Used
 Frontend	React.js, Tailwind CSS
 Backend	Spring Boot (Java 17)
@@ -46,7 +46,7 @@ Build Tool	Maven
 API	RESTful APIs
 Version Control	Git & GitHub
 
-⚙️ Installation
+# ⚙️ Installation
 🧩 Frontend (React.js)
 # Create React project using Vite
 npm create vite@latest billify-frontend
@@ -96,7 +96,7 @@ Dependencies: Spring Web, Spring Data JPA, MySQL Driver, Spring Boot DevTools, L
 Build and run using Maven:
 
 
-🤝 Contributing
+# 🤝 Contributing
 
 Contributions are welcome!
 
